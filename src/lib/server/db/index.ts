@@ -141,3 +141,30 @@ export const addUser = (user: User) => {
         console.error(err);
     }
 }
+export function getPasswordByUsername(username: string) {
+    try {
+        const stmt = db.prepare('SELECT password FROM users WHERE username = ?');
+        const result = stmt.get(username) as passwordResult | undefined;
+        if (result) {
+            return result.password;
+        }
+        return null;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+export function getUserIdByUsername(username: string) {
+    try {
+        const stmt = db.prepare('SELECT id FROM users WHERE username = ?');
+        const result = stmt.get(username) as idResult;
+        if (result) {
+            return result.id;
+        }
+        return null;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+
+}

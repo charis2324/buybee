@@ -51,3 +51,9 @@ interface User {
 	phoneNumber: string;
 	address: string;
 }
+interface passwordResult {
+	password: string;
+}
+interface idResult {
+	id: number;
+}
