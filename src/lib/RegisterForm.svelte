@@ -35,7 +35,6 @@
 <form
 	on:submit|preventDefault={onSubmit}
 	method="POST"
-	action="/"
 	class="w-full mx-auto space-y-5 variant-filled"
 >
 	<div>

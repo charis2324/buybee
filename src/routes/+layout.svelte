@@ -13,10 +13,10 @@
 	<svelte:fragment slot="header">
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<h1 class="h1 text-left">BuyBee</h1>
+				<h1 class="h1 text-left"><a href="/">BuyBee</a></h1>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
-				<a class="btn variant-filled-tertiary tracking-wide uppercase" href="/">Log in</a>
+				<a class="btn variant-filled-tertiary tracking-wide uppercase" href="/login">Log in</a>
 				<a class="btn variant-filled-tertiary tracking-wide uppercase" href="/register">Sign up</a>
 			</svelte:fragment>
 		</AppBar>
