@@ -11,7 +11,6 @@
 			showLoadMore: products[main_category.main_category_id].length == 3
 		};
 	});
-	//#region console.log(data.products[mainCategories[0].id]);
 	const handleClickLoadMore = async (event: CustomEvent) => {
 		const mainCategoryId = event.detail.categoryId;
 		const currentNumberOfPorduct = products[mainCategoryId].length;

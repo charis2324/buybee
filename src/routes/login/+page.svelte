@@ -17,8 +17,9 @@
 		if (!response.ok) {
 			loginErrorMessage = data.error;
 		} else {
-			localStorage.setItem('token', data.token);
-			localStorage.setItem('userId', data.id);
+			//localStorage.setItem('token', data.token);
+			//localStorage.setItem('userId', data.id);
+			window.location.href = '/';
 		}
 	};
 </script>
