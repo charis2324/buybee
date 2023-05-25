@@ -29,6 +29,5 @@ export const POST: RequestHandler = async (event) => {
     const userId = getUserIdByUsername(username)
     const token = jwt.sign({ id: userId }, JWT_SECRET);
     event.cookies.set('token', token, { httpOnly: true, path: '/' })
-
     return json({ id: userId })
 }

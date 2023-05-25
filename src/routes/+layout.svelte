@@ -8,10 +8,12 @@
 
 	import { AppBar, AppShell, Avatar } from '@skeletonlabs/skeleton';
 
+	import AvatarDropdown from '../lib/AvatarDropdown.svelte';
+
 	import logo from '$lib/assets/buybee_logo_shrink.png';
 	export let data;
 	let itemInCart = 0;
-	const userToken = data.userToken;
+	const userToken = data.userToken || '';
 </script>
 
 <AppShell>
@@ -26,8 +28,9 @@
 				>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
-				{#if userToken !== undefined}
-					<Avatar src="https://source.unsplash.com/YOErFW8AfkI/128x128" width="w-10" />
+				{#if userToken !== ''}
+					<!-- <Avatar src="https://source.unsplash.com/YOErFW8AfkI/128x128" width="w-10" /> -->
+					<AvatarDropdown />
 					<div class="btn cursor-pointer relative inline-block">
 						<span class="badge-icon variant-filled-warning absolute -top-0 -right-0 z-10"
 							>{itemInCart}</span

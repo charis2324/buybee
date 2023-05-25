@@ -34,7 +34,7 @@
 		<label for="password" class="label">
 			<span>Password*</span>
 			<input
-				type="text"
+				type="password"
 				id="username"
 				bind:value={password}
 				class="input variant-filled"
