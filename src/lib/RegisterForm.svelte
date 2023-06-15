@@ -9,7 +9,6 @@
 	let address = '';
 	let formValid = false;
 	export let errorMessage = '';
-
 	const dispatch = createEventDispatcher();
 	function onSubmit() {
 		if (username && email && password) {

@@ -27,7 +27,7 @@
 	{/if}
 	<hr class="w-full mx-auto mt-4" />
 	<div class="text-right pt-4">
-		<p>Total <span class="text-red-600 h3">{totalAmount} USD</span></p>
+		<p>Total <span class="text-red-600 h3">{totalAmount.toFixed(2)} USD</span></p>
 		<a class="underline underline-offset-4" href="/">Back to Shopping</a>
 	</div>
 </div>

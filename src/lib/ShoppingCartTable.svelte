@@ -91,9 +91,11 @@
 								<option value="10">10</option>
 							</select>
 						</td>
-						<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.selling_price}</td>
 						<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-							>{item.selling_price * item.quantity}</td
+							>{item.selling_price.toFixed(2)}</td
+						>
+						<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+							>{(item.selling_price * item.quantity).toFixed(2)}</td
 						>
 						<td class="px-6 py-4 whitespace-nowrap">
 							<button
