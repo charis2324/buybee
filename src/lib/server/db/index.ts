@@ -166,5 +166,117 @@ export function getUserIdByUsername(username: string) {
         console.error(err);
         return null;
     }
+}
+export function updateShoppingCart(userId: number, productId: number, quantity: number) {
+    // check if the user already has a shopping cart
+    const cartExists = db.prepare('SELECT id FROM shopping_carts WHERE user_id = ?').get(userId) as CartExists | undefined;
+    if (cartExists) {
+        // check if the product already exists in the user's cart
+        const productExists = db.prepare('SELECT id FROM shopping_cart_items WHERE cart_id = ? AND product_id = ?').get(cartExists.id, productId);
 
+        if (productExists) {
+            // update the quantity of the product in the user's existing cart
+            db.prepare('UPDATE shopping_cart_items SET quantity = ? WHERE cart_id = ? AND product_id = ?')
+                .run(quantity, cartExists.id, productId);
+        } else {
+            // add the new product to the user's existing cart
+            db.prepare('INSERT INTO shopping_cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)')
+                .run(cartExists.id, productId, quantity);
+        }
+    } else {
+        console.log('Cart does not exist. Making new cart for user.')
+        // create a new shopping cart for the user
+        const cart = db.prepare('INSERT INTO shopping_carts (user_id) VALUES (?)').run(userId);
+
+        // add the product to the new cart
+        db.prepare('INSERT INTO shopping_cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)')
+            .run(cart.lastInsertRowid, productId, quantity);
+    }
+}
+export function getUserShoppingCartStatus(userId: number) {
+    // Get the user's shopping cart
+    const cartExists = db.prepare('SELECT id FROM shopping_carts WHERE user_id = ?').get(userId) as CartExists | undefined;
+
+    if (!cartExists) {
+        console.log(`No shopping cart exists for userId: ${userId}`)
+        return null;
+    }
+
+    // Get the items in the user's shopping cart
+    const itemsQuery = db.prepare(`
+      SELECT
+        products.id AS product_id,
+        products.product_name,
+        products.selling_price,
+        shopping_cart_items.quantity
+      FROM shopping_cart_items
+      JOIN products
+        ON shopping_cart_items.product_id = products.id
+      WHERE shopping_cart_items.cart_id = ?
+    `);
+
+    const items = itemsQuery.all(cartExists.id) as CartItem[];
+
+    return { cartItems: items } as ShoppingCart;
+}
+export function getCartItemCount(userId: number) {
+    const stmt = db.prepare(`
+      SELECT COUNT(*) as count
+      FROM shopping_cart_items
+      INNER JOIN shopping_carts ON shopping_carts.id = shopping_cart_items.cart_id
+      WHERE shopping_carts.user_id = ?
+    `);
+    const result = stmt.get(userId) as CountResult;
+    console.log(result)
+    return result ? result.count : 0;;
+}
+export function removeItemFromCart(userId: number, productId: number) {
+    // Find the user's shopping cart
+    const cart = db
+        .prepare('SELECT * FROM shopping_carts WHERE user_id = ?')
+        .get(userId) as ShoppingCartRow | undefined;
+
+    if (!cart) {
+        console.warn(`User ${userId} does not have a shopping cart.`);
+        return;
+    }
+
+    // Find the item in the shopping cart
+    const item = db
+        .prepare(
+            'SELECT * FROM shopping_cart_items WHERE cart_id = ? AND product_id = ?'
+        )
+        .get(cart.id, productId) as ShoppingCartItemRow | undefined;
+
+    if (!item) {
+        console.warn(`Item ${productId} is not in the user's shopping cart.`);
+        return;
+    }
+
+    // Remove the item from the shopping cart
+    const result = db
+        .prepare('DELETE FROM shopping_cart_items WHERE id = ?')
+        .run(item.id);
+
+    if (result.changes === 0) {
+        console.warn(`Failed to remove item ${productId} from the shopping cart.`);
+        return;
+    }
+
+    // Check if there are any items left in the cart
+    const remainingItems = db
+        .prepare('SELECT * FROM shopping_cart_items WHERE cart_id = ?')
+        .all(cart.id) as ShoppingCartItemRow[];
+
+    // If no items are left in the cart, delete the cart from the shopping_carts table
+    if (remainingItems.length === 0) {
+        const cartResult = db
+            .prepare('DELETE FROM shopping_carts WHERE id = ?')
+            .run(cart.id);
+
+        if (cartResult.changes === 0) {
+            console.warn(`Failed to remove empty shopping cart with id ${cart.id}.`);
+            return;
+        }
+    }
 }

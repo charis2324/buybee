@@ -15,6 +15,7 @@
 	};
 	const dispatch = createEventDispatcher();
 	const handleClickAddToCart = () => {
+		console.log(productName);
 		dispatch('addtocart', { quantity: quantity, productName: productName });
 	};
 </script>

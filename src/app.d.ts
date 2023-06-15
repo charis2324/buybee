@@ -60,3 +60,32 @@ interface passwordResult {
 interface idResult {
 	id: number;
 }
+interface CartItem {
+	product_id: number;
+	product_name: string;
+	selling_price: number;
+	quantity: number;
+}
+interface ShoppingCart {
+	cartItems: cartItem[];
+}
+interface CartExists {
+	id: number
+}
+interface TokenPayload {
+	userId: number
+}
+interface CountResult {
+	count: number
+}
+interface ShoppingCartRow {
+	id: number;
+	user_id: number;
+}
+
+interface ShoppingCartItemRow {
+	id: number;
+	cart_id: number;
+	product_id: number;
+	quantity: number;
+}

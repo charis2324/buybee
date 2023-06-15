@@ -6,16 +6,24 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 
-	import { AppBar, AppShell, Avatar } from '@skeletonlabs/skeleton';
+	import { AppBar, AppShell } from '@skeletonlabs/skeleton';
 
 	import AvatarDropdown from '../lib/AvatarDropdown.svelte';
 
 	import logo from '$lib/assets/buybee_logo_shrink.png';
+
+	import { cartCount } from '../lib/cartCount';
+
 	export let data;
-	let itemInCart = 0;
+	//export let itemInCart = data.itemInCart;
+	$cartCount = data.itemInCart;
 	const userToken = data.userToken || '';
+	const handleClickCart = () => {
+		window.location.href = '/cart';
+	};
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <AppShell>
 	<svelte:fragment slot="header">
 		<AppBar regionRowMain="mx-auto w-full max-w-8xl lg:px-20 px-4">
@@ -31,9 +39,9 @@
 				{#if userToken !== ''}
 					<!-- <Avatar src="https://source.unsplash.com/YOErFW8AfkI/128x128" width="w-10" /> -->
 					<AvatarDropdown />
-					<div class="btn cursor-pointer relative inline-block">
+					<div class="btn cursor-pointer relative inline-block" on:click={handleClickCart}>
 						<span class="badge-icon variant-filled-warning absolute -top-0 -right-0 z-10"
-							>{itemInCart}</span
+							>{$cartCount}</span
 						>
 						<svg
 							class=" w-10 fill-[#DFE0E2]"
