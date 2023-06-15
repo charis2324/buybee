@@ -23,7 +23,7 @@
 			}
 		}
 	}
-	async function removeItem(item: CartItem) {
+	async function removeItem(event: Event, item: CartItem) {
 		item.quantity = 0;
 		console.log(item);
 		cartItems = cartItems.filter((cartItem) => cartItem.product_id !== item.product_id);
@@ -98,7 +98,7 @@
 						<td class="px-6 py-4 whitespace-nowrap">
 							<button
 								class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
-								on:click={removeItem(item)}>Remove</button
+								on:click={(event) => removeItem(event, item)}>Remove</button
 							>
 						</td>
 					</tr>

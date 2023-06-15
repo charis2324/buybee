@@ -17,6 +17,9 @@
 		class="card list-nav absolute dark w-48 right-0 top-14 text-center p-2"
 	>
 		<ul>
+			<li><a class="btn" href="/profile"><span>Profile</span></a></li>
+		</ul>
+		<ul>
 			<li><a class="btn" href="/api/logout"><span>Log out</span></a></li>
 		</ul>
 	</nav>

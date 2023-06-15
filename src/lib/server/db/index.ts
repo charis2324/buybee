@@ -280,3 +280,42 @@ export function removeItemFromCart(userId: number, productId: number) {
         }
     }
 }
+export function getUserInfo(userId: number): UserSafeInfo | null {
+    const statement = db.prepare(`
+      SELECT email, first_name, last_name, phone_number, address
+      FROM users
+      WHERE id = ?
+    `);
+
+    const result = statement.get(userId) as UserSafeInfo;
+    if (!result) {
+        return null;
+    }
+
+    return {
+        email: result.email,
+        first_name: result.first_name,
+        last_name: result.last_name,
+        phone_number: result.phone_number,
+        address: result.address,
+    };
+}
+
+// Update user information by userId
+export function updateUserInfo(userId: number, userInfo: UserSafeInfo): boolean {
+    const statement = db.prepare(`
+      UPDATE users
+      SET email = ?, first_name = ?, last_name = ?, phone_number = ?, address = ?
+      WHERE id = ?
+    `);
+
+    const result = statement.run(
+        userInfo.email,
+        userInfo.first_name,
+        userInfo.last_name,
+        userInfo.phone_number,
+        userInfo.address,
+        userId,
+    );
+    return result.changes > 0;
+}

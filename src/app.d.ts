@@ -54,6 +54,13 @@ interface User {
 	phoneNumber: string;
 	address: string;
 }
+interface UserSafeInfo {
+	email: string;
+	first_name: string;
+	last_name: string;
+	phone_number: string;
+	address: string;
+}
 interface passwordResult {
 	password: string;
 }
